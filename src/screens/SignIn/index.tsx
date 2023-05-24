@@ -12,7 +12,6 @@ import Button from "../../compoents/Button";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
 
 import backgroundImage from "../../assets/background.png";
-import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
 
