@@ -2,6 +2,7 @@
   "expo": {
     "name": "carwatch",
     "slug": "carwatch",
+    "scheme": "carwatch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,13 +14,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.georgeweverton.carwatch"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#202024"
-      }
+      },
+      "package": "com.georgeweverton.carwatch"
     },
     "web": {
       "favicon": "./assets/favicon.png"

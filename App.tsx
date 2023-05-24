@@ -9,6 +9,7 @@ import { SignIn } from "./src/screens/SignIn";
 import theme from "./src/theme";
 import { Loading } from "./src/compoents/Loading";
 import { StatusBar } from "react-native";
+import { ANDROID_CLIENT_ID } from "@env";
 
 export default function App() {
   const [fontsHaveBeenLoaded] = useFonts({
