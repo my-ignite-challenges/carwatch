@@ -6,17 +6,22 @@ import { useApp, useUser } from "@realm/react";
 import { Power } from "phosphor-react-native";
 
 import theme from "../../theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function HomeHeader() {
   const user = useUser();
   const app = useApp();
+
+  const safeAreaInsets = useSafeAreaInsets();
+
+  const paddingTop = safeAreaInsets.top + 32;
 
   function handleLogout() {
     app.currentUser?.logOut();
   }
 
   return (
-    <Container>
+    <Container style={{ paddingTop }}>
       <UserAvatar
         source={{ uri: user?.profile.pictureUrl }}
         placeholder="L184i9ofbHof00ayjsay~qj[ayj["
