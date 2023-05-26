@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 
 import { Alert } from "react-native";
 
+import { Realm, useApp } from "@realm/react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { Realm, useApp } from "@realm/react";
-
-import { Container, Slogan, Title } from "./styles";
 
 import Button from "../../components/Button";
 
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
 
 import backgroundImage from "../../assets/background.png";
+
+import { Container, Slogan, Title } from "./styles";
 
 WebBrowser.maybeCompleteAuthSession();
 

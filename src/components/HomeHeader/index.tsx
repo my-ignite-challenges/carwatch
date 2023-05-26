@@ -1,12 +1,12 @@
 import { TouchableOpacity } from "react-native";
 
-import { Container, Greeting, Message, Name, UserAvatar } from "./styles";
-
 import { useApp, useUser } from "@realm/react";
 import { Power } from "phosphor-react-native";
 
 import theme from "../../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Container, Greeting, Message, Name, UserAvatar } from "./styles";
 
 export function HomeHeader() {
   const user = useUser();
