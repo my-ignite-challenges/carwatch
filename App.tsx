@@ -1,3 +1,5 @@
+import "react-native-get-random-values";
+
 import { StatusBar } from "react-native";
 
 import {
@@ -16,10 +18,6 @@ import { REALM_APP_ID } from "@env";
 import { RealmProvider } from "./src/libs/realm";
 import { Routes } from "./src/routes";
 import theme from "./src/theme";
-
-type Props = {
-  title: string;
-};
 
 export default function App() {
   const [fontsHaveBeenLoaded] = useFonts({

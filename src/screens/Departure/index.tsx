@@ -71,7 +71,6 @@ export function Departure() {
 
       goBack();
     } catch (error) {
-      console.log(error);
       return Alert.alert(
         "Registro de saída",
         "Não foi possível registrar a saída do veículo."
