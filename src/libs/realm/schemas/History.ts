@@ -29,7 +29,7 @@ export class History extends Realm.Object<History> {
 
   static schema = {
     name: "History",
-    primary: "_id",
+    primaryKey: "_id",
 
     properties: {
       _id: "uuid",
