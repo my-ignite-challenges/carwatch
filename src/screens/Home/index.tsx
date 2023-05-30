@@ -32,11 +32,15 @@ export function Home() {
       setVehicleInUse(vehicle);
     } catch (error) {
       Alert.alert(
-        "Veículos em uso",
-        "Não foi possível carregar a lista de veículos em uso"
+        "Veículo em uso",
+        "Não foi possível carregar os dados do veículo em uso"
       );
     }
   }
+
+  useEffect(() => {
+    fetchVehicleInUse();
+  }, []);
 
   useEffect(() => {
     realm.addListener("change", () => fetchVehicleInUse());
