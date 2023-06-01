@@ -79,20 +79,17 @@ export function Arrival() {
 
         <Label>Finalidade</Label>
         <Description>{history?.description}</Description>
-
-        {history?.status === "departure" && (
-          <Footer>
-            <IconButton
-              icon={X}
-              onPress={handleUsageRecordRemovalConfirmation}
-            />
-            <Button
-              title="Registrar Chegada"
-              onPress={handleArrivalRegistration}
-            />
-          </Footer>
-        )}
       </Content>
+
+      {history?.status === "departure" && (
+        <Footer>
+          <IconButton icon={X} onPress={handleUsageRecordRemovalConfirmation} />
+          <Button
+            title="Registrar Chegada"
+            onPress={handleArrivalRegistration}
+          />
+        </Footer>
+      )}
     </Container>
   );
 }
