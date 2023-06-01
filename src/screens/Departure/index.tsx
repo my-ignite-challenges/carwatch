@@ -70,6 +70,8 @@ export function Departure() {
         "Registro de saída",
         "Não foi possível registrar a saída do veículo."
       );
+    } finally {
+      setIsRegisteringDeparture(false);
     }
   }
 

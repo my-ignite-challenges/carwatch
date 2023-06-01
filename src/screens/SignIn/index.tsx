@@ -47,7 +47,6 @@ export function SignIn() {
         );
 
         app.logIn(credentials).catch((error) => {
-          console.log(error);
           Alert.alert(
             "Autenticação",
             "Não foi possível conectar-se a sua conta Google."

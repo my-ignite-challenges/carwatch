@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "@realm/react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -23,6 +24,7 @@ export function Home() {
   const { navigate } = useNavigation();
   const history = useQuery(History);
   const realm = useRealm();
+  const user = useUser();
 
   function handleNavigation() {
     vehicleInUse?._id
@@ -90,6 +92,16 @@ export function Home() {
   useEffect(() => {
     fetchHistory();
   }, [history]);
+
+  useEffect(() => {
+    realm.subscriptions.update((mutableSubs, realm) => {
+      const historyByUser = realm
+        .objects("History")
+        .filtered(`user_id = '${user!.id}'`);
+
+      mutableSubs.add(historyByUser, { name: "history_by_user" });
+    });
+  }, [realm]);
 
   return (
     <Container>
