@@ -7,11 +7,14 @@ import {
   Roboto_400Regular,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { AppProvider, UserProvider } from "@realm/react";
+import { WifiSlash } from "phosphor-react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "styled-components/native";
 
 import { Loading } from "./src/components/Loading";
+import { TopMessage } from "./src/components/TopMessage";
 import { SignIn } from "./src/screens/SignIn";
 
 import { REALM_APP_ID } from "@env";
@@ -24,6 +27,8 @@ export default function App() {
     Roboto_400Regular,
     Roboto_700Bold,
   });
+
+  const netInfo = useNetInfo();
 
   if (!fontsHaveBeenLoaded) {
     return <Loading />;
@@ -40,6 +45,9 @@ export default function App() {
             backgroundColor="transparent"
             translucent
           />
+          {!netInfo.isConnected && (
+            <TopMessage message="Você está offline." icon={WifiSlash} />
+          )}
           <UserProvider fallback={<SignIn />}>
             <RealmProvider sync={syncConfig} fallback={Loading}>
               <Routes />
