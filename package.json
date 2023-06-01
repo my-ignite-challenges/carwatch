@@ -15,6 +15,7 @@
     "@types/styled-components": "^5.1.26",
     "@types/styled-components-react-native": "^5.2.1",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "expo": "~48.0.15",
     "expo-auth-session": "~4.0.3",
     "expo-crypto": "~12.2.1",

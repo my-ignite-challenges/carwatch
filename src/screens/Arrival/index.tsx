@@ -32,6 +32,8 @@ export function Arrival() {
   const history = useObject(History, new BSON.UUID(id));
   const realm = useRealm();
 
+  const headerTitle = history?.status === "departure" ? "Chegada" : "Detalhes";
+
   function removeVehicleUsageRecord() {
     realm.write(() => {
       realm.delete(history);
@@ -70,7 +72,7 @@ export function Arrival() {
 
   return (
     <Container>
-      <Header title="Chegada" />
+      <Header title={headerTitle} />
       <Content>
         <Label>Placa do veículo</Label>
         <LicensePlate>{history?.license_plate}</LicensePlate>
@@ -78,13 +80,18 @@ export function Arrival() {
         <Label>Finalidade</Label>
         <Description>{history?.description}</Description>
 
-        <Footer>
-          <IconButton icon={X} onPress={handleUsageRecordRemovalConfirmation} />
-          <Button
-            title="Registrar Chegada"
-            onPress={handleArrivalRegistration}
-          />
-        </Footer>
+        {history?.status === "departure" && (
+          <Footer>
+            <IconButton
+              icon={X}
+              onPress={handleUsageRecordRemovalConfirmation}
+            />
+            <Button
+              title="Registrar Chegada"
+              onPress={handleArrivalRegistration}
+            />
+          </Footer>
+        )}
       </Content>
     </Container>
   );
