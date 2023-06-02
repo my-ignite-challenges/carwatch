@@ -19,6 +19,7 @@ import { useQuery, useRealm } from "../../libs/realm";
 import { History } from "../../libs/realm/schemas/History";
 
 import { Container, Content, EmptyListMessage, Title } from "./styles";
+import Toast from "react-native-toast-message";
 
 export function Home() {
   const [vehicleInUse, setVehicleInUse] = useState<History | null>(null);
@@ -89,6 +90,11 @@ export function Home() {
     if (percentage === 100) {
       await saveLastSyncTimestamp();
       fetchHistory();
+
+      Toast.show({
+        type: "info",
+        text1: "Todos os dados estão sincronizados",
+      });
     }
   }
 
