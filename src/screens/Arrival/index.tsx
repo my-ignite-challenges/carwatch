@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Alert } from "react-native";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -8,10 +10,12 @@ import Button from "../../components/Button";
 import { Header } from "../../components/Header";
 import { IconButton } from "../../components/IconButton";
 
+import { getLastSyncTimestamp } from "../../libs/asyncStorage";
 import { useObject, useRealm } from "../../libs/realm";
 import { History } from "../../libs/realm/schemas/History";
 
 import {
+  ConnectionStatusMessage,
   Container,
   Content,
   Description,
@@ -25,6 +29,8 @@ type RouteParamProps = {
 };
 
 export function Arrival() {
+  const [hasDataBeenSynced, setHasDataBeenSynced] = useState(false);
+
   const route = useRoute();
   const { id } = route.params as RouteParamProps;
   const { goBack } = useNavigation();
@@ -70,6 +76,12 @@ export function Arrival() {
     }
   }
 
+  useEffect(() => {
+    getLastSyncTimestamp().then((lastSync) => {
+      setHasDataBeenSynced(lastSync > history!.updated_at.getTime());
+    });
+  }, []);
+
   return (
     <Container>
       <Header title={headerTitle} />
@@ -89,6 +101,13 @@ export function Arrival() {
             onPress={handleArrivalRegistration}
           />
         </Footer>
+      )}
+
+      {!hasDataBeenSynced && (
+        <ConnectionStatusMessage>
+          Sincronização de dados da{" "}
+          {history?.status === "departure" ? "partida" : "chegada"} pendente.
+        </ConnectionStatusMessage>
       )}
     </Container>
   );
