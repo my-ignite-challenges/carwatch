@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { useUser } from "@realm/react";
+import { Realm, useUser } from "@realm/react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -75,6 +75,13 @@ export function Home() {
     }
   }
 
+  function handleProgressNotification(
+    transferred: number,
+    transferable: number
+  ) {
+    const percentage = (transferred / transferable) * 100;
+  }
+
   useEffect(() => {
     fetchVehicleInUse();
   }, []);
@@ -102,6 +109,23 @@ export function Home() {
       mutableSubs.add(historyByUser, { name: "history_by_user" });
     });
   }, [realm]);
+
+  useEffect(() => {
+    const syncSession = realm.syncSession;
+
+    if (!syncSession) {
+      return;
+    }
+
+    syncSession.addProgressNotification(
+      Realm.ProgressDirection.Upload,
+      Realm.ProgressMode.ReportIndefinitely,
+      handleProgressNotification
+    );
+
+    return () =>
+      syncSession.removeProgressNotification(handleProgressNotification);
+  }, []);
 
   return (
     <Container>
