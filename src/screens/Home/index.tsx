@@ -6,10 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Realm, useUser } from "@realm/react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { CloudArrowUp } from "phosphor-react-native";
+import Toast from "react-native-toast-message";
 
 import { CarStatus } from "../../components/CarStatus";
 import { HistoryItem, HistoryItemProps } from "../../components/HistoryItem";
 import { HomeHeader } from "../../components/HomeHeader";
+import { TopMessage } from "../../components/TopMessage";
 
 import {
   getLastSyncTimestamp,
@@ -19,11 +22,11 @@ import { useQuery, useRealm } from "../../libs/realm";
 import { History } from "../../libs/realm/schemas/History";
 
 import { Container, Content, EmptyListMessage, Title } from "./styles";
-import Toast from "react-native-toast-message";
 
 export function Home() {
   const [vehicleInUse, setVehicleInUse] = useState<History | null>(null);
   const [historyList, setHistoryList] = useState<HistoryItemProps[]>([]);
+  const [percentageToSync, setPercentageToSync] = useState<string | null>(null);
 
   const { navigate } = useNavigation();
   const history = useQuery(History);
@@ -89,12 +92,17 @@ export function Home() {
 
     if (percentage === 100) {
       await saveLastSyncTimestamp();
-      fetchHistory();
+      await fetchHistory();
+      setPercentageToSync(null);
 
       Toast.show({
         type: "info",
         text1: "Todos os dados estão sincronizados",
       });
+    }
+
+    if (percentage < 100) {
+      setPercentageToSync(`${percentage.toFixed(0)}% sincronizado.`);
     }
   }
 
@@ -145,6 +153,9 @@ export function Home() {
 
   return (
     <Container>
+      {percentageToSync && (
+        <TopMessage message={percentageToSync} icon={CloudArrowUp} />
+      )}
       <HomeHeader />
 
       <Content>
