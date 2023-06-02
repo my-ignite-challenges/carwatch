@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Alert } from "react-native";
+import { Alert, FlatList } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { Realm, useUser } from "@realm/react";
@@ -11,11 +11,14 @@ import { CarStatus } from "../../components/CarStatus";
 import { HistoryItem, HistoryItemProps } from "../../components/HistoryItem";
 import { HomeHeader } from "../../components/HomeHeader";
 
+import {
+  getLastSyncTimestamp,
+  saveLastSyncTimestamp,
+} from "../../libs/asyncStorage";
 import { useQuery, useRealm } from "../../libs/realm";
 import { History } from "../../libs/realm/schemas/History";
 
 import { Container, Content, EmptyListMessage, Title } from "./styles";
-import { FlatList } from "react-native";
 
 export function Home() {
   const [vehicleInUse, setVehicleInUse] = useState<History | null>(null);
@@ -45,17 +48,19 @@ export function Home() {
     }
   }
 
-  function fetchHistory() {
+  async function fetchHistory() {
     try {
       const response = history.filtered(
         "status = 'arrival' SORT(created_at DESC)"
       );
 
+      const lastDataSync = await getLastSyncTimestamp();
+
       const formattedHistoryData = response.map((item) => {
         return {
           id: item._id.toString(),
           licensePlate: item.license_plate,
-          isSynced: false,
+          isSynced: lastDataSync > item.updated_at!.getTime(),
           createdAt: format(
             item.created_at,
             "'Saída em' dd/MM/yyyy 'às' HH:mm",
@@ -75,11 +80,16 @@ export function Home() {
     }
   }
 
-  function handleProgressNotification(
+  async function handleProgressNotification(
     transferred: number,
     transferable: number
   ) {
     const percentage = (transferred / transferable) * 100;
+
+    if (percentage === 100) {
+      await saveLastSyncTimestamp();
+      fetchHistory();
+    }
   }
 
   useEffect(() => {
